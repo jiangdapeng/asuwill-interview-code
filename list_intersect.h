@@ -20,6 +20,7 @@ struct List
 };
 
 // circle exists? 
+/*
 bool is_circle_exists(List* pHead,List*& ppStart)
 {
 	using namespace std;
@@ -40,6 +41,29 @@ bool is_circle_exists(List* pHead,List*& ppStart)
 	ppStart = NULL;
 	return false;
 }
+*/
+//在别人博客上看到一个更好的检测方法
+//用不同的步伐遍历，如果有环，则两个遍历肯定相遇
+bool is_circle_exists(List* pHead,List*& ppStart)
+{
+	if(pHead == NULL)
+		return false;
+	List* p1 = pHead;
+	List* p2 = pHead->m_pNext;
+	while(p2 && p2->m_pNext)
+	{
+		p1 = p1->m_pNext;
+		p2 = p2->m_pNext->m_pNext;
+		if(p1 == p2)
+		{
+			ppStart = p1;
+			return true;
+		}
+	}
+	ppStart = NULL;
+	return false;
+}
+
 
 //list without circle
 bool is_intersect_nc(List* head1,List* head2)
