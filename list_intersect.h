@@ -12,12 +12,7 @@
 */
 
 #include <set>
-
-struct List
-{
-	int m_iValue;
-	List* m_pNext;
-};
+#include "list.h"
 
 // circle exists? 
 /*
@@ -44,10 +39,6 @@ bool is_circle_exists(List* pHead,List*& ppStart)
 */
 //在别人博客上看到一个更好的检测方法
 //用不同的步伐遍历，如果有环，则两个遍历肯定相遇
-/**
-* @param [i] pHead: head of list to be checked
-* @param [o] ppStart: if circle exists,return a node in the circle by ppStart
-*/
 bool is_circle_exists(List* pHead,List*& ppStart)
 {
 	if(pHead == NULL)
@@ -86,14 +77,6 @@ bool is_intersect_nc(List* head1,List* head2)
 //lists with or without circle 
 bool is_intersect(List* head1,List* head2)
 {
-    /*
-    * 思路:
-    * 1、先判断是否有环
-    * 2、如果一个有环，一个没还，肯定不相交
-    * 3、如果都没环，则只需要检查链表尾节点是否相同
-    * 4、如果都有环，则找到链表1中属于环的一个节点，
-    *    判断此节点是否在另外一个链表上，如果在，则相交，否则不相交
-    */
 	List* cs1=NULL;
 	List* cs2=NULL;
 	bool c1 = is_circle_exists(head1,cs1);
