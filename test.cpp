@@ -5,6 +5,7 @@
 #include <vector>
 using namespace std;
 
+/*
 //test reverse_list.h
 #include "reverselist.h"
 int main()
@@ -17,7 +18,7 @@ int main()
 	display(head);
 	freeList(head);
 }
-
+*/
 
 /*
 int main () {
@@ -163,14 +164,17 @@ int main()
 }
 */
 
-/**
+/*
 //test bt2list.h
+#include "bt2list.h"
 int main()
 {
 	int n;
 	cin>>n;
 	BSTreeNode* root = buildTree(n);
-	//visitTree(root);
+	visitTree(root);
+	root = remove(root,3);
+	visitTree(root);
 	BSTreeNode* list = bt2list(root);
 	display(list);
 	freeList(list);
