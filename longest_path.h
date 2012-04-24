@@ -20,6 +20,21 @@ struct Result
 	int leftAndRight;//max(left+right)
 };
 
+//这里考虑的是二叉树节点本身并没有存储额外的信息
+//因为我想利用前面写过的搜索二叉树的代码，方便测试
+
+//如果重新定义二叉树节点的结构，可以定义成类似以下的形式：
+/*
+struct BTreeNode
+{
+	int m_iValue;
+	int m_iMaxPath;
+	int m_iMax2Leaf;
+	BTreeNode* m_pNext;
+};
+*/
+// 相当于将Result嵌入了节点，如此则可以避免返回结构体，整体思路依然是一致的
+
 // 返回以root为根的二叉树中存在的最长路径值leftAndRight，
 // 以及从root到叶子节点的最长路径leftOrRight
 // 需要返回两个值，是因为上层需要中间节点的最长路径信息才能判断最后的最长路径
