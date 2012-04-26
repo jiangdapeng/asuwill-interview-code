@@ -100,4 +100,14 @@ void visitTree(BSTreeNode* root)
 	}
 }
 
+void freeTree(BSTreeNode* root)
+{
+    if(root)
+    {
+        freeTree(root->m_pLeft);
+        freeTree(root->m_pRight);
+        delete root;
+    }
+}
+
 #endif

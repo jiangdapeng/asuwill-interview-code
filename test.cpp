@@ -5,6 +5,49 @@
 #include <vector>
 using namespace std;
 
+//test bst_mirror.h
+
+#include "bst_mirror.h"
+int main()
+{
+    int n;
+    BSTreeNode* root=NULL;
+    while(true)
+    {
+        cin >> n;
+        if(n==0)break;
+        root = buildTree(n);
+        visitTree(root);
+        root = mirror_r(root);
+        visitTree(root);
+        root = mirror(root);
+        visitTree(root);
+        freeTree(root);
+    }
+}
+
+/*
+// test sum_eq.h
+#include "sum_eq.h"
+int main()
+{
+	int n;
+	int value[20];
+	int sum;
+	while(true)
+	{
+		cin >> n;
+		if(n == 0)
+			break;
+        for(int i=0;i<n;++i)
+            cin >> value[i];
+        cin>>sum;
+        sum_eq(value,n,sum);
+	}
+	return 0;
+}
+*/
+
 /*
 //test reverse_list.h
 #include "reverselist.h"
