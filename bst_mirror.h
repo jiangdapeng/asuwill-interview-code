@@ -49,24 +49,22 @@ BSTreeNode* mirror(BSTreeNode* root)
     if(root == NULL)
         return NULL;
     stack<BSTreeNode*> sb;
-    BSTreeNode* tmp = root;
-    BSTreeNode* p = NULL;
-    while(tmp!=NULL || !sb.empty())
+    BSTreeNode *tmp=NULL;
+    BSTreeNode *p=NULL;
+    sb.push(root);
+    while(!sb.empty())
     {
-        if(tmp!=NULL)
-        {
-            sb.push(tmp);
-            tmp = tmp->m_pLeft;
-        }
-        else
-        {
-            p = sb.top();
-            sb.pop();
-            tmp = p->m_pLeft;
-            p->m_pLeft = p->m_pRight;
-            p->m_pRight = tmp;
-            tmp = p->m_pLeft;
-        }
+        p = sb.top();
+        sb.pop();
+        tmp = p->m_pLeft;
+        p->m_pLeft = p->m_pRight;
+        p->m_pRight = tmp;
+        
+        if(p->m_pLeft)
+            sb.push(p->m_pLeft);
+        if(p->m_pRight)
+            sb.push(p->m_pRight);
+
     }
     return root;
 }

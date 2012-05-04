@@ -144,6 +144,16 @@ struct ListNode
   int m_nKey;
   ListNode* m_pNext;
 };
+思路：利用两个指针 p1,p2;
+p1=p2=head
+for(int i=0;i<=k-1;++i)
+   p1=p1->m_pNext;
+while(p1)
+{
+	p1 = p1->m_pNext;
+	p2 = p2->m_pNext;
+}
+
 
 
 第14题：
@@ -152,6 +162,9 @@ struct ListNode
 要求时间复杂度是O(n)。如果有多对数字的和等于输入的数字，输出任意一对即可。
 例如输入数组1、2、4、7、11、15和数字15。由于4+11=15，因此输出4和11。
 
+思路见代码：sum_eq.h
+扩展：如果数据是没有排序的，依然要求在O(n)的时间找出两个数，如何解？
+思路：还没有想到- -
 
 第15题：
 题目：输入一颗二元查找树，将该树转换为它的镜像，
@@ -187,11 +200,23 @@ struct BSTreeNode // a node in the binary search tree (BST)
 / \ / \
 5 7 9 11
 输出8 6 10 5 7 9 11。
+思路：也就是常说的层序遍历
 
 
 第17题：
 题目：在一个字符串中找到第一个只出现一次的字符。如输入abaccdeff，则输出b。   
 分析：这道题是2006年google的一道笔试题。
+思路：
+1、最笨的方法：O(n^2)，略（当然空间是最省的）
+2、统计每个字符的次数，用一个map即可，但是这里只有字符，ASCII值在0——255，因此只用一个普通的数组
+  就可以搞定。用字符的ascii值做下标
+伪代码：
+  input:str
+  int c2i[256]={0};
+  for c in str:
+      c2i[c]++;
+  for c in str:
+      if(c2i[c] ==1) return c;
 
 
 第18题：
@@ -211,11 +236,36 @@ f(n)= 1 n=1
 输入n，用最快的方法求该数列的第n项。
 分析：在很多C语言教科书中讲到递归函数的时候，都会用Fibonacci作为例子。
 因此很多程序员对这道题的递归解法非常熟悉，但....呵呵，你知道的。。
-
+思路：
+为了避免无畏的重复计算，采用迭代的计算更好
+如果这个方法需要在一段代码内频繁使用，可以考虑如下方式，用数组保存已经计算的结果：
+vector<int> fab(10);
+static max_calculated = 1;
+fab[0] = 0;
+fab[1] = 1;
+int f(int n)
+{
+	if(n<=max_calculated)
+		return fab[n];
+	else
+	{
+		for(int i=max_calculated+1;i<=n;++i)
+			fab.push_back(fab[n-2]+fab[n-1]);
+		max_calculated = n;
+		return fab[n];
+	}
+}
+据说这个有log(n)的解法，暂时我还没想出来
+谁想出来了告知我一声呗邮箱：asuwill.jdp@gmail.com
 
 第20题：
 题目：输入一个表示整数的字符串，把该字符串转换成整数并输出。
 例如输入字符串"345"，则输出整数345
+很常规的，但是很实用的一个功能。当然库函数都有实现。自己模拟实现库函数吧
+注意几点：
+1、输入的合法性判断
+2、正负号的判断 “-1234”
+3、溢出判断 if result > numeric_limits<int>::max() then overflow
 
 第21-25题：
 ------------------
