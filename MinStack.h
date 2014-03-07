@@ -1,105 +1,101 @@
-/***************************************************************************
- * File:MinStack.h
- * Author:asuwill(asuwill.jdp@gmail.com)
- *
- * A LIFO stack class that supports O(1) push, pop, and find-min.  Here, the
- * find-min operation returns (but does not remove) the minimum value in the
- * stack.  This sort of stack is often used as a subroutine in other problems.
- * It can be used to construct a queue with equivalent properties by
- * using one of the many stack-to-queue constructions, for example.
- *
- * the basic idea here is: use extra space to store index to min value
- 
- 2.Éè¼Æ°üº¬minº¯ÊıµÄÕ»¡£
-¶¨ÒåÕ»µÄÊı¾İ½á¹¹£¬ÒªÇóÌí¼ÓÒ»¸öminº¯Êı£¬ÄÜ¹»µÃµ½Õ»µÄ×îĞ¡ÔªËØ¡£
-ÒªÇóº¯Êımin¡¢pushÒÔ¼°popµÄÊ±¼ä¸´ÔÓ¶È¶¼ÊÇO(1)¡£
- */
+/*
+* @author jdpdyx@126.com
+* @date 2014-03-04
+* @note push\pop\minçš„æ—¶é—´å¤æ‚åº¦éƒ½æ˜¯O(1)ã€‚æ³¨æ„ï¼Œè¿™ä¸ªå®ç°ä¸æ˜¯å¤šçº¿ç¨‹å®‰å…¨çš„
+* @æ€è·¯ï¼šä½¿ç”¨ä¸€ä¸ªè¾…åŠ©æ ˆæ¥ä¿å­˜æ¯ä¸€ä¸ªé˜¶æ®µçš„æœ€å°å€¼
+*/
 
-#ifndef MIN_STACK_H
-#define MIN_STACK_H
+#include <stack>
+#include <functional>
 
-#include<vector>     // use as stack
-#include<functional> // std::less
+using std::stack;
+using std::less;
 
-
-template<typename T,
-	typename Comparator = std::less<T> >
+template<typename T, typename Comparator = less<T> >
 class MinStack
 {
 public:
-	explicit MinStack(Comparator=Comparator());
+  explicit MinStack(Comparator c = Comparator());
+  MinStack(const MinStack<T, Comparator>& ms);
 
-	void push(const T& v);
+  void push(const T& v);
 
-	void pop();
+  T top();
 
-	const T& top() const;
+  void pop();
 
-	const T& min() const;
+  T min();
 
-	bool empty() const;
+  bool empty();
 
-	size_t size() const;
+  size_t size();
+
 private:
-	std::vector<T> m_vStack;  //store value
-	std::vector<int> m_iStack;//store index to min
-	Comparator m_comp;
-	
+  stack<T> vStack;
+  stack<T> mStack;
+
+  Comparator m_cmp;
 };
 
-template<typename T,typename Comparator>
-MinStack<T,Comparator>::MinStack(Comparator c)
-	:m_vStack(),m_iStack(),m_comp(c)
+template<typename T, typename Comparator>
+MinStack<T, Comparator>::MinStack(Comparator c):
+  m_cmp(c)
 {
 }
 
-template<typename T,typename Comparator>
-bool MinStack<T,Comparator>::empty()const
+template<typename T, typename Comparator>
+MinStack<T,Comparator>::MinStack(const MinStack<T,Comparator>& ms):
+  vStack(ms.vStack),mStack(ms.mStack),m_cmp(ms.m_cmp)
 {
-	return m_vStack.empty();
 }
 
-template<typename T,typename Comparator>
-size_t MinStack<T,Comparator>::size()const
-{
-	return m_vStack.size();
-}
-
-template<typename T,typename Comparator>
-void MinStack<T,Comparator>::pop()
-{
-	m_vStack.pop_back();
-	m_iStack.pop_back();
-}
-
-template<typename T,typename Comparator>
-const T& MinStack<T,Comparator>::top() const
-{
-	return m_vStack.back();
-}
-
-template<typename T,typename Comparator>
-const T& MinStack<T,Comparator>::min() const
-{
-	return m_vStack[m_iStack.back()];
-}
-
-template<typename T,typename Comparator>
+template<typename T, typename Comparator>
 void MinStack<T,Comparator>::push(const T& v)
 {
-	if(empty())
-	{
-		m_vStack.push_back(v);
-		m_iStack.push_back(0);
-	}
-	else
-	{
-		size_t min_index = m_iStack.back();
-		if(m_comp(v,min()))
-			min_index = m_vStack.size();
-		m_vStack.push_back(v);
-		m_iStack.push_back(min_index);
-	}
+  vStack.push(v);
+  if (mStack.empty())
+  {
+    mStack.push(v); // ç¬¬ä¸€ä¸ªå…ƒç´ ï¼Œè‚¯å®šæ˜¯å½“å‰æœ€å°å…ƒç´ 
+  }
+  else if(m_cmp(v ,mStack.top()))
+  {
+    mStack.push(v); // å‘ç°æ›´å°çš„å€¼
+  }
+  else
+  {
+    mStack.push(mStack.top()); // ä¾ç„¶æ˜¯ä¸Šä¸€ä¸ªæœ€å°å€¼
+  }
 }
 
-#endif
+template<typename T, typename Comparator>
+T MinStack<T, Comparator>::top()
+{
+  if(vStack.empty()) throw "Empty MinStack";
+  else return vStack.top();
+}
+
+template<typename T, typename Comparator>
+void MinStack<T, Comparator>::pop()
+{
+  vStack.pop();
+  mStack.pop();
+}
+
+template<typename T, typename Comparator>
+T MinStack<T, Comparator>::min()
+{
+  if(mStack.empty()) throw "Empty MinStack";
+  else return mStack.top();
+}
+
+template<typename T, typename Comparator>
+bool MinStack<T, Comparator>::empty()
+{
+  return vStack.empty();
+}
+
+template<typename T, typename Comparator>
+size_t MinStack<T, Comparator>::size()
+{
+  return vStack.size();
+}
