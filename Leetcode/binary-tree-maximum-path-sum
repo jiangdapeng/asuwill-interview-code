@@ -1,0 +1,36 @@
+/**
+ * @author asuwill.jdp@gmail.com
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int maxPathSum(TreeNode *root) {
+        int max_path_sum = - INT_MAX;
+        maxSinglePath(root, max_path_sum);
+        return max_path_sum;
+    }
+    
+    /*
+    * 返回从当前二叉树根节点到某个后代结点（不一定是叶子结点）的路径最大和
+    * 同时更新全局最大路径和 cur_max
+    */ 
+    int maxSinglePath(TreeNode* root, int& cur_max) {
+        if (root == NULL) return 0;
+        int left_max = maxSinglePath(root->left,cur_max);
+        int right_max = maxSinglePath(root->right, cur_max);
+        int single_max = max(max(left_max,right_max),0) + root->val; // 当前根节点到某个后代结点的最大路径和
+        // 全局最大路径:
+        // 可能来源：
+        //    1、左右子树里的全局最大路径和 cur_max
+        //    2、从当前根节点出发的最大路径
+        //    3、包含当前根节点的最大路径
+        cur_max = max(max(cur_max, single_max), left_max + right_max + root->val); 
+        return single_max;
+    }
+};
