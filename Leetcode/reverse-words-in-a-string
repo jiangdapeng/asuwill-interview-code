@@ -1,0 +1,54 @@
+class Solution {
+public:
+    void reverseWords(string &s) {
+        int n = s.length();
+        reverse(s,0, n-1);
+        int start = 0;
+        int end = 0;
+        // reverse words
+        while(start < n)
+        {
+            while(start<n && s[start] == ' ') start++;
+            end = start;
+            while(end < n && s[end] != ' ') end++;
+            reverse(s, start, end-1);
+            start = end + 1;
+        }
+        // 后面的工作只是为了去掉多余的空白
+        // remove heading and trailing white space
+        // reduce white space to one
+        vector<char> tmp;
+        int space_count = 0;
+        int i = 0;
+        while(i < n && s[i] == ' ') i++; // skip heading white space
+        for(;i<n;++i){
+            if (s[i] == ' ')
+            {
+                if(space_count > 0) continue;
+                else {
+                    space_count = 1;
+                }
+            }
+            else {
+                if (space_count > 0) {
+                    tmp.push_back(' ');
+                    space_count = 0;
+                }
+                tmp.push_back(s[i]);    
+            }
+        }
+        s.clear();
+        s.resize(tmp.size());
+        for(int j=0; j<tmp.size();++j) {
+            s[j] = tmp[j];
+        }
+    }
+    
+    void reverse(string& s, int i, int j){
+        while(i < j)
+        {
+            swap(s[i++],s[j--]);
+        }
+    }
+    
+};
