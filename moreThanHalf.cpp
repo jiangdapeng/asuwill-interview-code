@@ -36,6 +36,7 @@ int partition(vector<int>& a, size_t start, size_t end)
 
 /*
  * use partition
+ * 找到处于中间位置的那个数
  */
 int moreThanHalfNum(vector<int>& a) {
   int length = a.size();
@@ -59,6 +60,8 @@ int moreThanHalfNum(vector<int>& a) {
 
 /*
  * O(n)
+ * 记录当前遇到过的次数最多的数，遇到不同的数，计数减一
+ * 遇到相同的数，计数加一；如果计数到零，记录新的数
  */
 
 int moreThanHalfNum_2(vector<int>& a)
