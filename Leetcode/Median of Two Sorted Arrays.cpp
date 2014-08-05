@@ -1,5 +1,5 @@
 /*
-author: jdpdyx@126.com
+author: aswuill(jdpdyx@126.com)
 date: 2014/08/05
 blog:  http://www.asuwill.info/programming/152.html
 */
